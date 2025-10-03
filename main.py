@@ -1,22 +1,14 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from orders import app  
 
-app=FastAPI()
-print("hello")
-db={}
+x = FastAPI()
 
-class User(BaseModel):
-    name: str
-    role: str
+# Include the order-related routes from 'orders.py'
 
-@app.post('/create_user')
-async def create(user: User):
-    db["user"] = user.dict()
-    return user
+@x.get("/")
+def root():
+    return {"message": "Hello, FastAPI!"}
 
-@app.get('/user')
-async def get_user (name):
-    if name not in db:
-        print('User not defined')
-    return db['user']
-    
+x.include_router(app)
+
+# You can add other routers here (e.g., user-related, product-related)
